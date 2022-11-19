@@ -1,0 +1,45 @@
+@import '~node_modules/modern-normalize/modern-normalize.css';
+
+form {
+  display: flex;
+  justify-content: center;
+  padding: 20;
+  background-color: #e79c8c;
+}
+
+input {
+  border: 1px solid #deb81e;
+  padding: 7px;
+  width: 20rem;
+  background-color: #fcebe7;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+  border-right: none;
+  transition-property: box-shadow border-color;
+  transition-duration: 1s;
+  transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+  &:focus {
+    border-color: #b99609;
+    box-shadow: 1px 2px 20px 3px rgba(247, 247, 111, 0.5);
+    outline: none;
+  }
+}
+
+button {
+  background-color: #fcdc2b;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+  border: 1px solid #deb81e;
+
+  letter-spacing: 1.5;
+  color: #6f202a;
+  transition-property: color background-color box-shadow;
+  transition-duration: 1s;
+  transition-timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  &:hover,
+  &:focus {
+    background-color: #a22f3d;
+    color: #fcdc2b;
+    box-shadow: 1px 2px 20px 3px rgba(247, 247, 111, 0.5);
+  }
+}
