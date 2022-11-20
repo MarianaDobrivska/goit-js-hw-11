@@ -18,7 +18,6 @@ export class PixabayAPI {
     };
     axios.defaults.baseURL = 'https://pixabay.com';
     const { data } = await axios.get(`/api/?`, { params });
-
     return data;
   }
 
@@ -38,7 +37,11 @@ export class PixabayAPI {
     this.#page = 1;
   }
 
-  setTotal(newTotal) {
+  get totalPhotos() {
+    return this.#totalPhotos;
+  }
+
+  set totalPhotos(newTotal) {
     this.#totalPhotos = newTotal;
   }
 
