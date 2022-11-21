@@ -11,7 +11,7 @@ export class PixabayAPI {
       key: '31455017-154c201cdb83c0a22577e9bfb',
       q: this.#query,
       image_type: 'photo',
-      orientation: 'horisontal',
+      orientation: 'horizontal',
       safesearch: true,
       per_page: this.#per_page,
       page: this.#page,

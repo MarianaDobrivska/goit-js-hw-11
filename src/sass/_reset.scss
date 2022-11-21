@@ -104,6 +104,12 @@ input {
   background: transparent;
 }
 
+a {
+  outline: none;
+  text-decoration: none;
+  color: inherit;
+}
+
 .visually-hidden {
   position: absolute;
   width: 1px;
