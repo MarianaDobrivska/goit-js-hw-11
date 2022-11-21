@@ -8,6 +8,44 @@ refs.loadMoreBtn.classList.add('visually-hidden');
 const pixabay = new PixabayAPI();
 let gallery = new SimpleLightbox('a');
 
+function renderMarkup(results) {
+  const markup = results
+    .map(
+      ({
+        likes,
+        tags,
+        webformatURL,
+        views,
+        comments,
+        downloads,
+        largeImageURL,
+      }) => {
+        return `<a class="photo-card_wrapper" href="${largeImageURL}">
+          <div class="photo-card">
+  <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+  <div class="info">
+    <p class="info-item">Likes:
+      <b>${likes}</b>
+    </p>
+    <p class="info-item">Views:
+      <b>${views}</b>
+    </p>
+    <p class="info-item">Comments:
+      <b>${comments}</b>
+    </p>
+    <p class="info-item">Downloads:
+      <b>${downloads}</b>
+    </p>
+  </div>
+</div>
+</a>`;
+      }
+    )
+    .join('');
+
+  return markup;
+}
+
 async function handleSubmit(event) {
   event.preventDefault();
   const {
@@ -28,49 +66,18 @@ async function handleSubmit(event) {
   pixabay.resetPage();
 
   try {
+    refs.loadMoreBtn.classList.add('visually-hidden');
     const { hits, totalHits } = await pixabay.getPhotos();
     if (hits.length === 0) {
       refs.loadMoreBtn.classList.add('visually-hidden');
       refs.galleryEl.innerHTML = '';
-      Notiflix.Notify.info(
+      Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
       return;
     }
     pixabay.totalPhotos = totalHits;
-    const markup = hits
-      .map(
-        ({
-          likes,
-          tags,
-          webformatURL,
-          views,
-          comments,
-          downloads,
-          largeImageURL,
-        }) => {
-          return `<a class="photo-card_wrapper" href="${largeImageURL}">
-          <div class="photo-card">
-  <img src="${webformatURL}" alt="${tags}" loading="lazy" />
-  <div class="info">
-    <p class="info-item">Likes:
-      <b>${likes}</b>
-    </p>
-    <p class="info-item">Views:
-      <b>${views}</b>
-    </p>
-    <p class="info-item">Comments:
-      <b>${comments}</b>
-    </p>
-    <p class="info-item">Downloads:
-      <b>${downloads}</b>
-    </p>
-  </div>
-</div>
-</a>`;
-        }
-      )
-      .join('');
+    const markup = renderMarkup(hits);
     refs.galleryEl.insertAdjacentHTML('beforeend', markup);
     const showMore = pixabay.hasMorePhotos();
 
@@ -94,43 +101,14 @@ async function handleLoadMoreClick(event) {
 
   if (!showMore) {
     refs.loadMoreBtn.classList.add('visually-hidden');
+    Notiflix.Notify.info(
+      "We're sorry, but you've reached the end of search results."
+    );
   }
 
   try {
     const { hits } = await pixabay.getPhotos();
-    const markup = hits
-      .map(
-        ({
-          likes,
-          tags,
-          webformatURL,
-          views,
-          comments,
-          downloads,
-          largeImageURL,
-        }) => {
-          return `<a class="photo-card_wrapper" href="${largeImageURL}">
-          <div class="photo-card">
-  <img src="${webformatURL}" alt="${tags}" loading="lazy" />
-  <div class="info">
-    <p class="info-item">Likes:
-      <b>${likes}</b>
-    </p>
-    <p class="info-item">Views:
-      <b>${views}</b>
-    </p>
-    <p class="info-item">Comments:
-      <b>${comments}</b>
-    </p>
-    <p class="info-item">Downloads:
-      <b>${downloads}</b>
-    </p>
-  </div>
-</div>
-</a>`;
-        }
-      )
-      .join('');
+    const markup = renderMarkup(hits);
     refs.galleryEl.insertAdjacentHTML('beforeend', markup);
 
     gallery.refresh();
